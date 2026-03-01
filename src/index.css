@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #7c3aed;
+  --color-primary-light: #a78bfa;
+  --color-primary-dark: #5b21b6;
+
+  --color-bg-page: #faf9fb;
+  --color-bg-card: #ffffff;
+  --color-bg-input: #f5f3ff;
+
+  --color-text-main: #1e1b2e;
+  --color-text-dim: #6b7280;
+  --color-text-accent: #7c3aed;
+
+  --color-border: #e5e1ef;
+  --color-border-focus: #7c3aed;
+
+  --color-green: #10b981;
+  --color-green-bg: #ecfdf5;
+  --color-red: #ef4444;
+  --color-red-bg: #fef2f2;
+  --color-amber: #f59e0b;
+  --color-amber-bg: #fffbeb;
+  --color-blue: #3b82f6;
+  --color-blue-bg: #eff6ff;
+
+  --color-shopee: #ee4d2d;
+  --color-shopee-bg: #fff5f2;
+  --color-ml: #ffe600;
+  --color-ml-text: #2d3277;
+  --color-ml-bg: #fffde6;
+}
+
+body {
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  background: var(--color-bg-page);
+  color: var(--color-text-main);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] {
+  -moz-appearance: textfield;
+}
