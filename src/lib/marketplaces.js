@@ -44,19 +44,10 @@ function calcShopeeCNPJ(salePrice) {
   };
 }
 
-// ── Shopee CPF (>450 pedidos / 90 dias) ─────────────────────
-const SHOPEE_CPF_EXTRA = 3;
-
+// ── Shopee CPF ──────────────────────────────────────────────
+// Taxas idênticas ao CNPJ (confirmado com dados reais Mar/2026)
 function calcShopeeCPF(salePrice) {
-  const base = calcShopeeCNPJ(salePrice);
-  return {
-    ...base,
-    cpfExtra: SHOPEE_CPF_EXTRA,
-    fixedFee: base.fixedFee + SHOPEE_CPF_EXTRA,
-    totalFees: base.totalFees + SHOPEE_CPF_EXTRA,
-    totalFeesWithPix: base.totalFeesWithPix + SHOPEE_CPF_EXTRA,
-    fixedFeeLabel: `R$${base.fixedFee} + R$${SHOPEE_CPF_EXTRA} CPF`,
-  };
+  return calcShopeeCNPJ(salePrice);
 }
 
 // ── Mercado Livre Clássico ──────────────────────────────────
@@ -123,7 +114,6 @@ export const MARKETPLACES = [
     icon: "🛒",
     calculate: calcShopeeCPF,
     hasPix: true,
-    note: "Taxa extra de R$3 para >450 pedidos/90 dias",
   },
   {
     id: "ml-classico",
