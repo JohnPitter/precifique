@@ -6,6 +6,10 @@ export default function ReverseCalc({ costs }) {
   const [salePrice, setSalePrice] = useState("");
   const price = parseFloat(salePrice) || 0;
 
+  const hasCosts = Object.entries(costs)
+    .filter(([k]) => k !== "taxRate")
+    .some(([, v]) => v > 0);
+
   return (
     <div className="bg-bg-card border border-border rounded-2xl p-5 sm:p-6">
       <h2 className="text-lg font-bold mb-1 flex items-center gap-2">
@@ -33,24 +37,60 @@ export default function ReverseCalc({ costs }) {
           {MARKETPLACES.map((mp) => {
             const r = calcFromPrice(price, costs, mp);
             const isProfit = r.profit > 0;
+            const netWithPix = mp.hasPix && r.fees.pixDiscount > 0
+              ? price - r.fees.totalFeesWithPix
+              : null;
+            const profitWithPix = netWithPix !== null ? netWithPix - r.totalCost : null;
+
             return (
-              <div key={mp.id} className={`border rounded-xl p-3 ${isProfit ? "border-green/30 bg-green-bg/50" : "border-red/30 bg-red-bg/50"}`}>
-                <div className="flex items-center gap-1.5 mb-1">
+              <div key={mp.id} className={`border rounded-xl p-3 ${hasCosts ? (isProfit ? "border-green/30 bg-green-bg/50" : "border-red/30 bg-red-bg/50") : "border-border bg-bg-highlight/50"}`}>
+                <div className="flex items-center gap-1.5 mb-2">
                   <span>{mp.icon}</span>
                   <span className="text-sm font-bold">{mp.name}</span>
                   <span className="text-xs text-text-dim">{mp.badge}</span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-xs text-text-dim">Taxas</p>
-                    <p className="text-sm font-semibold text-text-dim">{formatBRL(r.fees.totalFees)}</p>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-text-dim">Taxas</span>
+                    <span className="font-semibold text-text-dim">{formatBRL(r.fees.totalFees)}</span>
                   </div>
-                  <div className="text-right">
-                    <p className="text-xs text-text-dim">Lucro</p>
-                    <p className={`text-lg font-bold ${isProfit ? "text-green" : "text-red"}`}>{formatBRL(r.profit)}</p>
+
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-text-dim">Você recebe</span>
+                    <span className="font-semibold">{formatBRL(r.netRevenue)}</span>
                   </div>
+
+                  {hasCosts && (
+                    <>
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-text-dim">Custo total</span>
+                        <span className="font-semibold text-text-dim">{formatBRL(r.totalCost)}</span>
+                      </div>
+                      <div className="border-t border-border/50 pt-1.5 flex items-center justify-between">
+                        <span className="text-sm font-medium">Lucro</span>
+                        <span className={`text-lg font-bold ${isProfit ? "text-green" : "text-red"}`}>{formatBRL(r.profit)}</span>
+                      </div>
+                      <p className="text-xs text-text-dim text-right">Margem: {r.actualMargin.toFixed(1)}%</p>
+                    </>
+                  )}
                 </div>
-                <p className="text-xs text-text-dim mt-1 text-right">Margem: {r.actualMargin.toFixed(1)}%</p>
+
+                {netWithPix !== null && (
+                  <div className="mt-2 pt-2 border-t border-border/30 space-y-1">
+                    <p className="text-[11px] text-text-dim font-medium">Com subsídio PIX:</p>
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="text-text-dim">Taxas {formatBRL(r.fees.totalFeesWithPix)}</span>
+                      <span className="text-text-secondary font-semibold">Recebe {formatBRL(netWithPix)}</span>
+                    </div>
+                    {hasCosts && profitWithPix !== null && (
+                      <div className="flex items-center justify-between text-xs">
+                        <span className="text-text-dim">Lucro</span>
+                        <span className={`font-bold ${profitWithPix > 0 ? "text-green" : "text-red"}`}>{formatBRL(profitWithPix)}</span>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             );
           })}

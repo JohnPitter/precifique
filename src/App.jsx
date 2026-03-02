@@ -52,7 +52,7 @@ export default function App() {
 
           {/* Right: Results */}
           <div className="space-y-5">
-            {results.length > 0 ? (
+            {results.length > 0 && (
               <>
                 <ComparisonBar results={results} />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -60,17 +60,9 @@ export default function App() {
                     <MarketplaceCard key={marketplace.id} marketplace={marketplace} result={result} />
                   ))}
                 </div>
-                <ReverseCalc costs={costsWithTax} />
               </>
-            ) : (
-              <div className="bg-bg-card border border-border rounded-2xl p-10 text-center">
-                <span className="text-5xl block mb-4">🧮</span>
-                <h3 className="text-lg font-bold mb-2">Preencha seus custos</h3>
-                <p className="text-sm text-text-dim max-w-sm mx-auto">
-                  Digite pelo menos o custo do produto para ver o preço ideal em cada marketplace.
-                </p>
-              </div>
             )}
+            <ReverseCalc costs={costsWithTax} />
           </div>
         </div>
       </main>
