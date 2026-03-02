@@ -11,7 +11,7 @@ const SHOPEE_CNPJ_TIERS = [
   { maxPrice: 99.99, pct: 0.14, fixed: 16 },
   { maxPrice: 199.99, pct: 0.14, fixed: 20 },
   { maxPrice: 499.99, pct: 0.14, fixed: 26 },
-  { maxPrice: Infinity, pct: 0.14, fixed: 26 },
+  { maxPrice: Infinity, pct: 0.14, fixed: 28 },
 ];
 
 const SHOPEE_PIX_SUBSIDY = [
@@ -62,8 +62,8 @@ function calcShopeeCPF(salePrice) {
 // ── Mercado Livre Clássico ──────────────────────────────────
 const ML_CLASSICO_TIERS = [
   { maxPrice: 79, pct: 0.14, fixed: 6.5 },
-  { maxPrice: 199, pct: 0.13, fixed: 6.5 },
-  { maxPrice: Infinity, pct: 0.10, fixed: 6.0 },
+  { maxPrice: 199, pct: 0.13, fixed: 0 },
+  { maxPrice: Infinity, pct: 0.10, fixed: 0 },
 ];
 
 function calcMLClassico(salePrice) {
@@ -78,7 +78,7 @@ function calcMLClassico(salePrice) {
     pixDiscount: 0,
     totalFeesWithPix: totalFees,
     commissionPct: tier.pct,
-    fixedFeeLabel: `R$${tier.fixed.toFixed(2)}`,
+    fixedFeeLabel: tier.fixed > 0 ? `R$${tier.fixed.toFixed(2)}` : "—",
   };
 }
 

@@ -5,4 +5,8 @@ import tailwindcss from "@tailwindcss/vite";
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   base: "/precifique/",
+  test: {
+    globals: true,
+    environment: "node",
+  },
 });
