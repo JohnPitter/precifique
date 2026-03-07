@@ -2,17 +2,21 @@ export default function Footer() {
   return (
     <footer className="px-4 pb-10 pt-6 sm:px-6">
       <div className="mx-auto flex max-w-[1380px] flex-col gap-4 rounded-[2rem] border border-white/70 bg-surface/80 p-5 shadow-panel backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-6">
-        <div className="flex items-center gap-4">
-          <div className="relative flex h-12 w-12 items-center justify-center rounded-[1.2rem] bg-ink text-white">
-            <span className="font-display text-xl font-bold">M</span>
-            <span className="absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full bg-sun" />
+        <div className="flex min-w-0 flex-col gap-3 sm:max-w-md">
+          <div className="flex min-w-0 items-center gap-4">
+            <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.2rem] bg-ink text-white">
+              <span className="font-display text-xl font-bold">M</span>
+              <span className="absolute bottom-2 right-2 h-2.5 w-2.5 rounded-full bg-sun" />
+            </div>
+            <div className="min-w-0">
+              <p className="font-display text-xl font-bold text-ink">Margem</p>
+              <p className="text-sm leading-5 text-ink-soft">Precificacao direta para marketplace.</p>
+            </div>
           </div>
-          <div>
-            <p className="font-display text-xl font-bold text-ink">Margem</p>
-            <p className="text-sm text-ink-soft">
-              Projeto rebatizado a partir do Precifique para focar em leitura de margem e decisao comercial.
-            </p>
-          </div>
+
+          <p className="text-sm leading-6 text-ink-soft">
+            Projeto rebatizado a partir do Precifique para focar em leitura de margem e decisao comercial.
+          </p>
         </div>
 
         <div className="text-sm leading-6 text-ink-soft sm:max-w-md sm:text-right">
