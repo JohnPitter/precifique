@@ -1,3 +1,5 @@
+import { getValueTextClass } from "../lib/pricing";
+
 const FIELDS = [
   {
     key: "productCost",
@@ -199,6 +201,8 @@ function RangeField({ label, value, min, max, step, onChange, presets }) {
 }
 
 function SummaryBox({ label, value, highlight }) {
+  const valueClass = getValueTextClass(value, "summary");
+
   return (
     <div
       className={`min-w-0 rounded-[1.4rem] border p-4 ${
@@ -210,7 +214,7 @@ function SummaryBox({ label, value, highlight }) {
       <p className={`text-[0.7rem] font-semibold uppercase tracking-[0.14em] ${highlight ? "text-accent" : "text-ink-soft"}`}>
         {label}
       </p>
-      <p className={`mt-2 break-words font-display text-[clamp(1.25rem,3vw,2rem)] font-bold tracking-tight leading-tight text-ink`}>
+      <p className={`mt-2 whitespace-nowrap font-display font-bold tracking-tight leading-tight tabular-nums text-ink ${valueClass}`}>
         {value}
       </p>
     </div>

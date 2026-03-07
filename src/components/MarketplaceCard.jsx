@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { formatBRL } from "../lib/pricing";
+import { formatBRL, getValueTextClass } from "../lib/pricing";
 
 const TONE_MAP = {
   shopee: {
@@ -27,6 +27,10 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
   const isProfit = profit > 0;
   const tone = TONE_MAP[marketplace.color];
   const mark = marketplace.id.startsWith("shopee") ? "SP" : "ML";
+  const salePriceLabel = formatBRL(salePrice);
+  const profitLabel = formatBRL(profit);
+  const salePriceClass = getValueTextClass(salePriceLabel, "display");
+  const profitClass = getValueTextClass(profitLabel, "hero");
 
   return (
     <section
@@ -68,16 +72,16 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
         </p>
         <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div className="min-w-0">
-            <p className="break-words font-display text-[clamp(2rem,5vw,2.25rem)] font-bold tracking-tight leading-tight text-ink">
-              {formatBRL(salePrice)}
+            <p className={`whitespace-nowrap font-display font-bold tracking-tight leading-tight tabular-nums text-ink ${salePriceClass}`}>
+              {salePriceLabel}
             </p>
             <p className="mt-2 break-words text-sm leading-6 text-ink-soft">
               Receita liquida estimada em {formatBRL(salePrice - fees.totalFees)}
             </p>
           </div>
           <div className="min-w-0 text-left sm:text-right">
-            <p className={`break-words font-display text-[clamp(1.4rem,3.5vw,2rem)] font-bold leading-tight ${isProfit ? "text-green" : "text-danger"}`}>
-              {formatBRL(profit)}
+            <p className={`whitespace-nowrap font-display font-bold leading-tight tabular-nums ${profitClass} ${isProfit ? "text-green" : "text-danger"}`}>
+              {profitLabel}
             </p>
             <p className="mt-1 break-words text-xs uppercase tracking-[0.16em] text-ink-soft">
               {actualMargin.toFixed(1)}% de margem real
@@ -134,19 +138,23 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
 }
 
 function MetricCard({ label, value, accent }) {
+  const valueClass = getValueTextClass(value);
+
   return (
     <div className="min-w-0 rounded-[1.2rem] border border-ink/10 bg-bg-input/75 p-4">
       <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">{label}</p>
-      <p className={`mt-2 break-words text-[clamp(1rem,2.8vw,1.125rem)] font-semibold leading-tight text-ink ${accent ?? ""}`}>{value}</p>
+      <p className={`mt-2 whitespace-nowrap font-semibold leading-tight tabular-nums text-ink ${valueClass} ${accent ?? ""}`}>{value}</p>
     </div>
   );
 }
 
 function DetailRow({ label, value, dim, accent, highlight }) {
+  const valueClass = getValueTextClass(value);
+
   return (
     <div className="flex items-start justify-between gap-3 rounded-xl bg-white/70 px-3 py-2">
       <span className={`min-w-0 break-words ${dim ? "text-ink-soft" : "text-ink"}`}>{label}</span>
-      <span className={`min-w-0 break-words text-right font-semibold tabular-nums ${accent ? accent : highlight ? "text-green" : "text-ink"}`}>
+      <span className={`min-w-0 whitespace-nowrap text-right font-semibold tabular-nums ${valueClass} ${accent ? accent : highlight ? "text-green" : "text-ink"}`}>
         {value}
       </span>
     </div>

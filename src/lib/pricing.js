@@ -82,3 +82,37 @@ export function formatBRL(value) {
     minimumFractionDigits: 2,
   });
 }
+
+function getValueLength(value) {
+  return `${value}`.replace(/\s+/g, "").length;
+}
+
+export function getValueTextClass(value, variant = "stat") {
+  const length = getValueLength(value);
+
+  if (variant === "display") {
+    if (length >= 13) return "text-[clamp(0.95rem,1.7vw,1.25rem)]";
+    if (length >= 11) return "text-[clamp(1.1rem,2vw,1.45rem)]";
+    if (length >= 10) return "text-[clamp(1.7rem,3.6vw,2.1rem)]";
+    return "text-[clamp(2rem,5vw,2.25rem)]";
+  }
+
+  if (variant === "hero") {
+    if (length >= 13) return "text-[clamp(0.82rem,1.2vw,0.98rem)]";
+    if (length >= 11) return "text-[clamp(0.92rem,1.45vw,1.08rem)]";
+    if (length >= 10) return "text-[clamp(1rem,1.8vw,1.25rem)]";
+    return "text-[clamp(1.4rem,3.5vw,2rem)]";
+  }
+
+  if (variant === "summary") {
+    if (length >= 13) return "text-[clamp(0.72rem,1vw,0.84rem)]";
+    if (length >= 11) return "text-[clamp(0.82rem,1.2vw,0.96rem)]";
+    if (length >= 10) return "text-[clamp(0.92rem,1.4vw,1.08rem)]";
+    return "text-[clamp(1.25rem,3vw,2rem)]";
+  }
+
+  if (length >= 13) return "text-[clamp(0.68rem,0.95vw,0.8rem)]";
+  if (length >= 11) return "text-[clamp(0.76rem,1.05vw,0.88rem)]";
+  if (length >= 10) return "text-[clamp(0.84rem,1.2vw,0.96rem)]";
+  return "text-[clamp(1rem,2.8vw,1.125rem)]";
+}

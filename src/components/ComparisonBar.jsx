@@ -1,4 +1,4 @@
-import { formatBRL } from "../lib/pricing";
+import { formatBRL, getValueTextClass } from "../lib/pricing";
 
 export default function ComparisonBar({ results }) {
   if (!results.length) return null;
@@ -39,7 +39,7 @@ export default function ComparisonBar({ results }) {
                 ? "Todos os canais estao negativos. Voce precisa subir preco ou reduzir a estrutura de custo."
                 : `Hoje ele entrega ${formatBRL(gap)} a mais por unidade em relacao ao segundo colocado.`}
             </p>
-            <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3">
+            <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(150px,1fr))] gap-3">
               <MiniStat label="Lucro unitario" value={formatBRL(best.result.profit)} />
               <MiniStat label="Preco ideal" value={formatBRL(best.result.salePrice)} />
             </div>
@@ -53,6 +53,8 @@ export default function ComparisonBar({ results }) {
               : Math.min(100, Math.max(14, (Math.max(0, result.profit) / Math.max(maxProfit, 0.01)) * 100));
             const isProfit = result.profit > 0;
             const isBest = marketplace.id === best.marketplace.id;
+            const profitValue = formatBRL(result.profit);
+            const profitValueClass = getValueTextClass(profitValue, "hero");
             const tone = marketplace.color === "shopee"
               ? "from-shopee via-accent to-sun"
               : "from-ml-text via-ink to-accent";
@@ -92,8 +94,8 @@ export default function ComparisonBar({ results }) {
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
                       Lucro por unidade
                     </p>
-                    <p className={`mt-1 break-words font-display text-[clamp(1.4rem,3vw,2rem)] font-bold leading-tight ${isProfit ? "text-green" : "text-danger"}`}>
-                      {formatBRL(result.profit)}
+                    <p className={`mt-1 whitespace-nowrap font-display font-bold leading-tight tabular-nums ${profitValueClass} ${isProfit ? "text-green" : "text-danger"}`}>
+                      {profitValue}
                     </p>
                   </div>
                 </div>
@@ -120,19 +122,23 @@ export default function ComparisonBar({ results }) {
 }
 
 function MiniStat({ label, value }) {
+  const valueClass = getValueTextClass(value, "hero");
+
   return (
     <div className="min-w-0 rounded-[1.15rem] border border-white/10 bg-white/7 p-3">
       <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/50">{label}</p>
-      <p className="mt-2 break-words font-display text-[clamp(1rem,2.8vw,1.25rem)] font-bold leading-tight">{value}</p>
+      <p className={`mt-2 whitespace-nowrap font-display font-bold leading-tight tabular-nums ${valueClass}`}>{value}</p>
     </div>
   );
 }
 
 function Metric({ label, value }) {
+  const valueClass = getValueTextClass(value);
+
   return (
     <div className="min-w-0 rounded-[1.15rem] border border-ink/10 bg-bg-input/70 p-3">
       <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">{label}</p>
-      <p className="mt-2 break-words text-[clamp(1rem,2.5vw,1.125rem)] font-semibold leading-tight text-ink">{value}</p>
+      <p className={`mt-2 whitespace-nowrap font-semibold leading-tight tabular-nums text-ink ${valueClass}`}>{value}</p>
     </div>
   );
 }

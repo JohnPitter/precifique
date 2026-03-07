@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { MARKETPLACES } from "../lib/marketplaces";
-import { calcFromPrice, formatBRL } from "../lib/pricing";
+import { calcFromPrice, formatBRL, getValueTextClass } from "../lib/pricing";
 
 export default function ReverseCalc({ costs }) {
   const [salePrice, setSalePrice] = useState("");
@@ -150,10 +150,12 @@ export default function ReverseCalc({ costs }) {
 }
 
 function Stat({ label, value, highlight }) {
+  const valueClass = getValueTextClass(value);
+
   return (
     <div className="min-w-0 rounded-[1.15rem] border border-ink/10 bg-white/70 p-3">
       <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">{label}</p>
-      <p className={`mt-2 break-words text-[clamp(1rem,2.8vw,1.125rem)] font-semibold leading-tight text-ink ${highlight ?? ""}`}>{value}</p>
+      <p className={`mt-2 whitespace-nowrap font-semibold leading-tight tabular-nums text-ink ${valueClass} ${highlight ?? ""}`}>{value}</p>
     </div>
   );
 }
