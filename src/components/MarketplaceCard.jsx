@@ -33,20 +33,20 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
       className={`animate-rise rounded-[1.8rem] border ${tone.ring} bg-white/82 p-5 shadow-[0_18px_45px_rgba(16,35,61,0.06)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-1`}
       style={{ animationDelay: `${index * 90}ms` }}
     >
-      <div className="flex items-start justify-between gap-4">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+        <div className="flex min-w-0 items-center gap-3">
           <div className={`flex h-12 w-12 items-center justify-center rounded-2xl font-display text-sm font-bold ${tone.mark}`}>
             {mark}
           </div>
-          <div>
+          <div className="min-w-0">
             <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
               {marketplace.name}
             </p>
             <div className="mt-1 flex flex-wrap items-center gap-2">
-              <h3 className="font-display text-2xl font-bold tracking-tight text-ink">
+              <h3 className="break-words font-display text-2xl font-bold tracking-tight text-ink">
                 {marketplace.badge}
               </h3>
-              <span className={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] ${tone.pill}`}>
+              <span className={`max-w-full break-words rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] ${tone.pill}`}>
                 {(fees.commissionPct * 100).toFixed(0)}% + {fees.fixedFeeLabel}
               </span>
             </div>
@@ -54,7 +54,7 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
         </div>
 
         <span
-          className={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] ${
+          className={`self-start rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] ${
             isProfit ? "bg-green/12 text-green" : "bg-danger/12 text-danger"
           }`}
         >
@@ -66,20 +66,20 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-soft">
           Preco recomendado
         </p>
-        <div className="mt-3 flex items-end justify-between gap-4">
-          <div>
-            <p className="font-display text-4xl font-bold tracking-tight text-ink">
+        <div className="mt-3 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="min-w-0">
+            <p className="break-words font-display text-[clamp(2rem,5vw,2.25rem)] font-bold tracking-tight leading-tight text-ink">
               {formatBRL(salePrice)}
             </p>
-            <p className="mt-2 text-sm text-ink-soft">
+            <p className="mt-2 break-words text-sm leading-6 text-ink-soft">
               Receita liquida estimada em {formatBRL(salePrice - fees.totalFees)}
             </p>
           </div>
-          <div className="text-right">
-            <p className={`font-display text-2xl font-bold ${isProfit ? "text-green" : "text-danger"}`}>
+          <div className="min-w-0 text-left sm:text-right">
+            <p className={`break-words font-display text-[clamp(1.4rem,3.5vw,2rem)] font-bold leading-tight ${isProfit ? "text-green" : "text-danger"}`}>
               {formatBRL(profit)}
             </p>
-            <p className="mt-1 text-xs uppercase tracking-[0.18em] text-ink-soft">
+            <p className="mt-1 break-words text-xs uppercase tracking-[0.16em] text-ink-soft">
               {actualMargin.toFixed(1)}% de margem real
             </p>
           </div>
@@ -112,7 +112,7 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
       <button
         type="button"
         onClick={() => setShowDetails(!showDetails)}
-        className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink-soft transition-colors hover:text-accent"
+        className="mt-4 inline-flex max-w-full flex-wrap items-center gap-2 text-sm font-semibold text-ink-soft transition-colors hover:text-accent"
       >
         <span className="rounded-full border border-ink/10 px-3 py-1">
           {marketplace.badge}
@@ -135,18 +135,18 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
 
 function MetricCard({ label, value, accent }) {
   return (
-    <div className="rounded-[1.2rem] border border-ink/10 bg-bg-input/75 p-4">
-      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{label}</p>
-      <p className={`mt-2 text-lg font-semibold text-ink ${accent ?? ""}`}>{value}</p>
+    <div className="min-w-0 rounded-[1.2rem] border border-ink/10 bg-bg-input/75 p-4">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">{label}</p>
+      <p className={`mt-2 break-words text-[clamp(1rem,2.8vw,1.125rem)] font-semibold leading-tight text-ink ${accent ?? ""}`}>{value}</p>
     </div>
   );
 }
 
 function DetailRow({ label, value, dim, accent, highlight }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl bg-white/70 px-3 py-2">
-      <span className={dim ? "text-ink-soft" : "text-ink"}>{label}</span>
-      <span className={`font-semibold tabular-nums ${accent ? accent : highlight ? "text-green" : "text-ink"}`}>
+    <div className="flex items-start justify-between gap-3 rounded-xl bg-white/70 px-3 py-2">
+      <span className={`min-w-0 break-words ${dim ? "text-ink-soft" : "text-ink"}`}>{label}</span>
+      <span className={`min-w-0 break-words text-right font-semibold tabular-nums ${accent ? accent : highlight ? "text-green" : "text-ink"}`}>
         {value}
       </span>
     </div>

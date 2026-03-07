@@ -12,8 +12,8 @@ export default function ComparisonBar({ results }) {
 
   return (
     <section className="animate-rise rounded-[2rem] border border-white/70 bg-surface/85 p-6 shadow-panel backdrop-blur-xl">
-      <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
-        <div className="lg:max-w-xs">
+      <div className="flex flex-col gap-6 xl:flex-row xl:items-start">
+        <div className="xl:max-w-xs">
           <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-accent">
             Ranking de margem
           </p>
@@ -29,7 +29,7 @@ export default function ComparisonBar({ results }) {
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/55">
               Veredito do cenario
             </p>
-            <h3 className="mt-3 font-display text-2xl font-bold">
+            <h3 className="mt-3 break-words font-display text-2xl font-bold leading-tight">
               {allNegative
                 ? "Nenhum canal sustenta a operacao"
                 : `${best.marketplace.name} ${best.marketplace.badge}`}
@@ -39,7 +39,7 @@ export default function ComparisonBar({ results }) {
                 ? "Todos os canais estao negativos. Voce precisa subir preco ou reduzir a estrutura de custo."
                 : `Hoje ele entrega ${formatBRL(gap)} a mais por unidade em relacao ao segundo colocado.`}
             </p>
-            <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="mt-5 grid grid-cols-[repeat(auto-fit,minmax(120px,1fr))] gap-3">
               <MiniStat label="Lucro unitario" value={formatBRL(best.result.profit)} />
               <MiniStat label="Preco ideal" value={formatBRL(best.result.salePrice)} />
             </div>
@@ -64,11 +64,11 @@ export default function ComparisonBar({ results }) {
                 className="rounded-[1.6rem] border border-ink/10 bg-white/80 p-4 shadow-[0_14px_34px_rgba(16,35,61,0.05)]"
               >
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-                  <div className="flex items-center gap-4">
+                  <div className="flex min-w-0 items-center gap-4">
                     <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${marketplace.color === "shopee" ? "bg-shopee/12 text-shopee" : "bg-ml/55 text-ml-text"} font-display text-sm font-bold`}>
                       {mark}
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-display text-xl font-bold text-ink">
                           {marketplace.name}
@@ -82,17 +82,17 @@ export default function ComparisonBar({ results }) {
                           </span>
                         )}
                       </div>
-                      <p className="mt-1 text-sm text-ink-soft">
+                      <p className="mt-1 break-words text-sm leading-6 text-ink-soft">
                         Preco ideal {formatBRL(result.salePrice)} com margem real de {result.actualMargin.toFixed(1)}%
                       </p>
                     </div>
                   </div>
 
-                  <div className="text-left md:text-right">
+                  <div className="min-w-0 text-left md:text-right">
                     <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
                       Lucro por unidade
                     </p>
-                    <p className={`mt-1 font-display text-2xl font-bold ${isProfit ? "text-green" : "text-danger"}`}>
+                    <p className={`mt-1 break-words font-display text-[clamp(1.4rem,3vw,2rem)] font-bold leading-tight ${isProfit ? "text-green" : "text-danger"}`}>
                       {formatBRL(result.profit)}
                     </p>
                   </div>
@@ -121,18 +121,18 @@ export default function ComparisonBar({ results }) {
 
 function MiniStat({ label, value }) {
   return (
-    <div className="rounded-[1.15rem] border border-white/10 bg-white/7 p-3">
-      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/50">{label}</p>
-      <p className="mt-2 font-display text-xl font-bold">{value}</p>
+    <div className="min-w-0 rounded-[1.15rem] border border-white/10 bg-white/7 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/50">{label}</p>
+      <p className="mt-2 break-words font-display text-[clamp(1rem,2.8vw,1.25rem)] font-bold leading-tight">{value}</p>
     </div>
   );
 }
 
 function Metric({ label, value }) {
   return (
-    <div className="rounded-[1.15rem] border border-ink/10 bg-bg-input/70 p-3">
-      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{label}</p>
-      <p className="mt-2 text-lg font-semibold text-ink">{value}</p>
+    <div className="min-w-0 rounded-[1.15rem] border border-ink/10 bg-bg-input/70 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">{label}</p>
+      <p className="mt-2 break-words text-[clamp(1rem,2.5vw,1.125rem)] font-semibold leading-tight text-ink">{value}</p>
     </div>
   );
 }

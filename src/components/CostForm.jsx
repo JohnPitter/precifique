@@ -94,7 +94,7 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
         />
       </div>
 
-      <div className="mt-8 grid gap-3 sm:grid-cols-3">
+      <div className="mt-8 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">
         <SummaryBox
           label="Base sem imposto"
           value={totalCost.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
@@ -201,16 +201,16 @@ function RangeField({ label, value, min, max, step, onChange, presets }) {
 function SummaryBox({ label, value, highlight }) {
   return (
     <div
-      className={`rounded-[1.4rem] border p-4 ${
+      className={`min-w-0 rounded-[1.4rem] border p-4 ${
         highlight
           ? "border-accent/20 bg-accent/10"
           : "border-ink/10 bg-white/75"
       }`}
     >
-      <p className={`text-xs font-semibold uppercase tracking-[0.18em] ${highlight ? "text-accent" : "text-ink-soft"}`}>
+      <p className={`text-[0.7rem] font-semibold uppercase tracking-[0.14em] ${highlight ? "text-accent" : "text-ink-soft"}`}>
         {label}
       </p>
-      <p className={`mt-2 font-display text-2xl font-bold tracking-tight ${highlight ? "text-ink" : "text-ink"}`}>
+      <p className={`mt-2 break-words font-display text-[clamp(1.25rem,3vw,2rem)] font-bold tracking-tight leading-tight text-ink`}>
         {value}
       </p>
     </div>

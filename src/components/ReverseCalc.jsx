@@ -25,7 +25,7 @@ export default function ReverseCalc({ costs }) {
           </p>
         </div>
 
-        <div className="rounded-[1.4rem] border border-ink/10 bg-white/75 px-4 py-3 text-sm text-ink-soft">
+        <div className="rounded-[1.4rem] border border-ink/10 bg-white/75 px-4 py-3 text-sm leading-6 text-ink-soft">
           {hasCosts
             ? "Com custos informados, o simulador mostra lucro e margem real."
             : "Sem custos, o simulador mostra taxas e repasse liquido."}
@@ -65,26 +65,26 @@ export default function ReverseCalc({ costs }) {
                 className={`rounded-[1.6rem] border p-4 shadow-[0_14px_34px_rgba(16,35,61,0.05)] ${tone}`}
                 style={{ animationDelay: `${index * 90}ms` }}
               >
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex items-center gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="flex min-w-0 items-center gap-3">
                     <div className={`flex h-11 w-11 items-center justify-center rounded-2xl font-display text-sm font-bold ${mp.color === "shopee" ? "bg-shopee/12 text-shopee" : "bg-ml/55 text-ml-text"}`}>
                       {mark}
                     </div>
-                    <div>
+                    <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-display text-xl font-bold text-ink">{mp.name}</span>
-                        <span className="rounded-full bg-white/70 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">
+                        <span className="max-w-full break-words rounded-full bg-white/70 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.12em] text-ink-soft">
                           {mp.badge}
                         </span>
                       </div>
-                      <p className="mt-1 text-sm text-ink-soft">
+                      <p className="mt-1 break-words text-sm leading-6 text-ink-soft">
                         Taxas totais de {formatBRL(r.fees.totalFees)}
                       </p>
                     </div>
                   </div>
 
                   {hasCosts && (
-                    <div className={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] ${isProfit ? "bg-green/12 text-green" : "bg-danger/12 text-danger"}`}>
+                    <div className={`self-start rounded-full px-3 py-1 text-[0.68rem] font-bold uppercase tracking-[0.12em] ${isProfit ? "bg-green/12 text-green" : "bg-danger/12 text-danger"}`}>
                       {isProfit ? "Lucro positivo" : "Lucro negativo"}
                     </div>
                   )}
@@ -111,7 +111,7 @@ export default function ReverseCalc({ costs }) {
                 </div>
 
                 {hasCosts && (
-                  <p className="mt-4 text-right text-xs uppercase tracking-[0.18em] text-ink-soft">
+                  <p className="mt-4 break-words text-right text-xs uppercase tracking-[0.16em] text-ink-soft">
                     Margem real {r.actualMargin.toFixed(1)}%
                   </p>
                 )}
@@ -151,9 +151,9 @@ export default function ReverseCalc({ costs }) {
 
 function Stat({ label, value, highlight }) {
   return (
-    <div className="rounded-[1.15rem] border border-ink/10 bg-white/70 p-3">
-      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{label}</p>
-      <p className={`mt-2 text-lg font-semibold text-ink ${highlight ?? ""}`}>{value}</p>
+    <div className="min-w-0 rounded-[1.15rem] border border-ink/10 bg-white/70 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">{label}</p>
+      <p className={`mt-2 break-words text-[clamp(1rem,2.8vw,1.125rem)] font-semibold leading-tight text-ink ${highlight ?? ""}`}>{value}</p>
     </div>
   );
 }
