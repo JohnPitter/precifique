@@ -1,107 +1,152 @@
 import { useState } from "react";
 import { formatBRL } from "../lib/pricing";
 
-export default function MarketplaceCard({ marketplace, result }) {
+const TONE_MAP = {
+  shopee: {
+    ring: "border-shopee/20",
+    mark: "bg-shopee/12 text-shopee",
+    surface: "bg-[linear-gradient(135deg,rgba(238,77,45,0.16),rgba(255,255,255,0.06))]",
+    pill: "bg-shopee text-white",
+    accent: "text-shopee",
+  },
+  ml: {
+    ring: "border-ml-text/15",
+    mark: "bg-ml/55 text-ml-text",
+    surface: "bg-[linear-gradient(135deg,rgba(255,230,0,0.35),rgba(255,255,255,0.08))]",
+    pill: "bg-ml text-ml-text",
+    accent: "text-ml-text",
+  },
+};
+
+export default function MarketplaceCard({ marketplace, result, index = 0 }) {
   const [showDetails, setShowDetails] = useState(false);
 
   if (!result) return null;
 
   const { salePrice, totalCost, fees, profit, actualMargin } = result;
   const isProfit = profit > 0;
-
-  const colorMap = {
-    shopee: {
-      border: "border-shopee/30",
-      bg: "bg-shopee-bg",
-      badge: "bg-shopee text-white",
-      accent: "text-shopee",
-    },
-    ml: {
-      border: "border-ml-text/20",
-      bg: "bg-ml-bg",
-      badge: "bg-ml text-ml-text",
-      accent: "text-ml-text",
-    },
-  };
-  const colors = colorMap[marketplace.color];
+  const tone = TONE_MAP[marketplace.color];
+  const mark = marketplace.id.startsWith("shopee") ? "SP" : "ML";
 
   return (
-    <div className={`bg-bg-card border ${colors.border} rounded-2xl overflow-hidden transition-all hover:shadow-md`}>
-      {/* Header */}
-      <div className={`${colors.bg} px-5 py-3 flex items-center justify-between`}>
-        <div className="flex items-center gap-2">
-          <span className="text-xl">{marketplace.icon}</span>
-          <span className="font-bold">{marketplace.name}</span>
-          <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${colors.badge}`}>
-            {marketplace.badge}
-          </span>
+    <section
+      className={`animate-rise rounded-[1.8rem] border ${tone.ring} bg-white/82 p-5 shadow-[0_18px_45px_rgba(16,35,61,0.06)] backdrop-blur-xl transition-transform duration-300 hover:-translate-y-1`}
+      style={{ animationDelay: `${index * 90}ms` }}
+    >
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className={`flex h-12 w-12 items-center justify-center rounded-2xl font-display text-sm font-bold ${tone.mark}`}>
+            {mark}
+          </div>
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
+              {marketplace.name}
+            </p>
+            <div className="mt-1 flex flex-wrap items-center gap-2">
+              <h3 className="font-display text-2xl font-bold tracking-tight text-ink">
+                {marketplace.badge}
+              </h3>
+              <span className={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] ${tone.pill}`}>
+                {(fees.commissionPct * 100).toFixed(0)}% + {fees.fixedFeeLabel}
+              </span>
+            </div>
+          </div>
         </div>
-        <span className={`text-xs font-medium ${colors.accent}`}>
-          {(fees.commissionPct * 100).toFixed(0)}% + {fees.fixedFeeLabel}
+
+        <span
+          className={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] ${
+            isProfit ? "bg-green/12 text-green" : "bg-danger/12 text-danger"
+          }`}
+        >
+          {isProfit ? "Margem positiva" : "Rever preco"}
         </span>
       </div>
 
-      {/* Main price */}
-      <div className="px-5 py-4">
-        <div className="text-center mb-3">
-          <p className="text-xs text-text-dim mb-0.5">Preço ideal de venda</p>
-          <p className="text-3xl font-extrabold tracking-tight">{formatBRL(salePrice)}</p>
-        </div>
-
-        {/* Profit indicator */}
-        <div className={`flex items-center justify-center gap-2 py-2 px-4 rounded-xl ${isProfit ? "bg-green-bg" : "bg-red-bg"}`}>
-          <span className="text-lg">{isProfit ? "✅" : "⚠️"}</span>
-          <div className="text-center">
-            <p className="text-xs text-text-dim">Lucro por unidade</p>
-            <p className={`text-lg font-bold ${isProfit ? "text-green" : "text-red"}`}>
+      <div className={`mt-5 rounded-[1.6rem] ${tone.surface} p-5`}>
+        <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-soft">
+          Preco recomendado
+        </p>
+        <div className="mt-3 flex items-end justify-between gap-4">
+          <div>
+            <p className="font-display text-4xl font-bold tracking-tight text-ink">
+              {formatBRL(salePrice)}
+            </p>
+            <p className="mt-2 text-sm text-ink-soft">
+              Receita liquida estimada em {formatBRL(salePrice - fees.totalFees)}
+            </p>
+          </div>
+          <div className="text-right">
+            <p className={`font-display text-2xl font-bold ${isProfit ? "text-green" : "text-danger"}`}>
               {formatBRL(profit)}
-              <span className="text-sm ml-1">({actualMargin.toFixed(1)}%)</span>
+            </p>
+            <p className="mt-1 text-xs uppercase tracking-[0.18em] text-ink-soft">
+              {actualMargin.toFixed(1)}% de margem real
             </p>
           </div>
         </div>
+      </div>
 
-        {/* Pix info */}
-        {marketplace.hasPix && fees.pixDiscount > 0 && (
-          <div className="mt-3 bg-blue-bg border border-blue/20 rounded-xl px-4 py-2 text-center">
-            <p className="text-xs text-blue font-medium">
-              💠 Com Pix: taxas caem para {formatBRL(fees.totalFeesWithPix)}
-              <span className="ml-1 text-text-dim">(economia de {formatBRL(fees.pixDiscount)})</span>
+      <div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <MetricCard label="Custo total" value={formatBRL(totalCost)} />
+        <MetricCard label="Total de taxas" value={formatBRL(fees.totalFees)} accent={tone.accent} />
+        <MetricCard label="Comissao" value={formatBRL(fees.commission)} />
+        <MetricCard label="Taxa fixa" value={fees.fixedFee > 0 ? formatBRL(fees.fixedFee) : "Sem taxa fixa"} />
+      </div>
+
+      {marketplace.hasPix && fees.pixDiscount > 0 && (
+        <div className="mt-4 rounded-[1.4rem] border border-sky/20 bg-sky/10 p-4">
+          <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
+            Subsidio Pix
+          </p>
+          <div className="mt-3 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+            <p className="text-sm text-ink-soft">
+              Taxas caem para {formatBRL(fees.totalFeesWithPix)} quando o pagamento entra por Pix.
+            </p>
+            <p className="text-sm font-semibold text-sky-700">
+              Economia de {formatBRL(fees.pixDiscount)}
             </p>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Toggle details */}
-        <button
-          onClick={() => setShowDetails(!showDetails)}
-          className="w-full text-xs text-text-dim mt-3 py-1 hover:text-primary transition-colors flex items-center justify-center gap-1"
-        >
-          {showDetails ? "▲ Ocultar detalhes" : "▼ Ver detalhes"}
-        </button>
+      <button
+        type="button"
+        onClick={() => setShowDetails(!showDetails)}
+        className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-ink-soft transition-colors hover:text-accent"
+      >
+        <span className="rounded-full border border-ink/10 px-3 py-1">
+          {marketplace.badge}
+        </span>
+        {showDetails ? "Ocultar estrutura" : "Detalhar estrutura"}
+      </button>
 
-        {showDetails && (
-          <div className="mt-2 space-y-1 text-sm">
-            <DetailRow label="Custo total do produto" value={formatBRL(totalCost)} />
-            <DetailRow label={`Comissão (${(fees.commissionPct * 100).toFixed(0)}%)`} value={formatBRL(fees.commission)} dim />
-            <DetailRow label="Taxa fixa" value={fees.fixedFee > 0 ? formatBRL(fees.fixedFee) : "—"} dim />
-            <DetailRow label="Total de taxas" value={formatBRL(fees.totalFees)} accent />
-            <DetailRow label="Receita líquida" value={formatBRL(salePrice - fees.totalFees)} />
-            <DetailRow label="Lucro" value={formatBRL(profit)} highlight={isProfit} />
-          </div>
-        )}
+      {showDetails && (
+        <div className="mt-4 space-y-2 rounded-[1.4rem] border border-ink/10 bg-bg-input/70 p-4 text-sm">
+          <DetailRow label="Receita liquida" value={formatBRL(salePrice - fees.totalFees)} />
+          <DetailRow label={`Comissao (${(fees.commissionPct * 100).toFixed(0)}%)`} value={formatBRL(fees.commission)} dim />
+          <DetailRow label="Taxa fixa" value={fees.fixedFee > 0 ? formatBRL(fees.fixedFee) : "Sem taxa fixa"} dim />
+          <DetailRow label="Lucro projetado" value={formatBRL(profit)} highlight={isProfit} />
+          {marketplace.note && <p className="pt-2 text-xs text-ink-soft">{marketplace.note}</p>}
+        </div>
+      )}
+    </section>
+  );
+}
 
-        {marketplace.note && (
-          <p className="text-xs text-text-dim mt-3 text-center italic">{marketplace.note}</p>
-        )}
-      </div>
+function MetricCard({ label, value, accent }) {
+  return (
+    <div className="rounded-[1.2rem] border border-ink/10 bg-bg-input/75 p-4">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{label}</p>
+      <p className={`mt-2 text-lg font-semibold text-ink ${accent ?? ""}`}>{value}</p>
     </div>
   );
 }
 
 function DetailRow({ label, value, dim, accent, highlight }) {
   return (
-    <div className="flex justify-between items-center py-1 px-2 rounded-lg odd:bg-bg-page/50">
-      <span className={dim ? "text-text-dim" : ""}>{label}</span>
-      <span className={`font-semibold tabular-nums ${accent ? "text-primary" : highlight ? "text-green" : ""}`}>
+    <div className="flex items-center justify-between gap-3 rounded-xl bg-white/70 px-3 py-2">
+      <span className={dim ? "text-ink-soft" : "text-ink"}>{label}</span>
+      <span className={`font-semibold tabular-nums ${accent ? accent : highlight ? "text-green" : "text-ink"}`}>
         {value}
       </span>
     </div>

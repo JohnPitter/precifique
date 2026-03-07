@@ -5,56 +5,134 @@ export default function ComparisonBar({ results }) {
 
   const sorted = [...results].sort((a, b) => a.result.profit - b.result.profit).reverse();
   const best = sorted[0];
+  const second = sorted[1];
   const maxProfit = Math.max(...results.map((r) => r.result.profit));
   const allNegative = maxProfit <= 0;
+  const gap = second ? best.result.profit - second.result.profit : 0;
 
   return (
-    <div className="bg-bg-card border border-border rounded-2xl p-5 sm:p-6">
-      <h2 className="text-lg font-bold mb-1 flex items-center gap-2">
-        <span className="text-2xl">📊</span>
-        Comparativo Rápido
-      </h2>
-      <p className="text-sm text-text-dim mb-4">
-        {allNegative
-          ? "Aumente o preço ou reduza custos — todos os canais dão prejuízo"
-          : `Melhor opção: ${best.marketplace.name} ${best.marketplace.badge}`}
-      </p>
+    <section className="animate-rise rounded-[2rem] border border-white/70 bg-surface/85 p-6 shadow-panel backdrop-blur-xl">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-start">
+        <div className="lg:max-w-xs">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-accent">
+            Ranking de margem
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink">
+            Onde o seu cenario respira melhor
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-ink-soft">
+            O placar abaixo ordena os canais pelo lucro por unidade e evidencia quando vale defender preco,
+            trocar canal ou rever custo.
+          </p>
 
-      <div className="space-y-3">
-        {sorted.map(({ marketplace, result }) => {
-          const barWidth = maxProfit > 0
-            ? Math.max(5, (Math.max(0, result.profit) / maxProfit) * 100)
-            : 5;
-          const isProfit = result.profit > 0;
-          const isBest = marketplace.id === best.marketplace.id && isProfit;
-
-          return (
-            <div key={marketplace.id}>
-              <div className="flex items-center justify-between text-sm mb-1">
-                <div className="flex items-center gap-1.5">
-                  <span>{marketplace.icon}</span>
-                  <span className="font-medium">{marketplace.name}</span>
-                  <span className="text-xs text-text-dim">{marketplace.badge}</span>
-                  {isBest && <span className="text-xs bg-green/10 text-green font-bold px-1.5 py-0.5 rounded-full">Melhor</span>}
-                </div>
-                <span className={`font-bold tabular-nums ${isProfit ? "text-green" : "text-red"}`}>
-                  {formatBRL(result.profit)}
-                </span>
-              </div>
-              <div className="w-full bg-bg-page rounded-full h-3 overflow-hidden">
-                <div
-                  className={`h-full rounded-full transition-all duration-500 ${isProfit ? (isBest ? "bg-green" : "bg-green/60") : "bg-red/40"}`}
-                  style={{ width: `${barWidth}%` }}
-                />
-              </div>
-              <div className="flex justify-between text-xs text-text-dim mt-0.5">
-                <span>Venda: {formatBRL(result.salePrice)}</span>
-                <span>Margem: {result.actualMargin.toFixed(1)}%</span>
-              </div>
+          <div className="mt-6 rounded-[1.6rem] bg-ink p-5 text-white shadow-[0_20px_50px_rgba(16,35,61,0.24)]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/55">
+              Veredito do cenario
+            </p>
+            <h3 className="mt-3 font-display text-2xl font-bold">
+              {allNegative
+                ? "Nenhum canal sustenta a operacao"
+                : `${best.marketplace.name} ${best.marketplace.badge}`}
+            </h3>
+            <p className="mt-2 text-sm leading-6 text-white/72">
+              {allNegative
+                ? "Todos os canais estao negativos. Voce precisa subir preco ou reduzir a estrutura de custo."
+                : `Hoje ele entrega ${formatBRL(gap)} a mais por unidade em relacao ao segundo colocado.`}
+            </p>
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              <MiniStat label="Lucro unitario" value={formatBRL(best.result.profit)} />
+              <MiniStat label="Preco ideal" value={formatBRL(best.result.salePrice)} />
             </div>
-          );
-        })}
+          </div>
+        </div>
+
+        <div className="flex-1 space-y-4">
+          {sorted.map(({ marketplace, result }) => {
+            const barWidth = allNegative
+              ? Math.min(100, Math.max(18, (Math.abs(best.result.profit) / Math.max(Math.abs(result.profit), 0.01)) * 100))
+              : Math.min(100, Math.max(14, (Math.max(0, result.profit) / Math.max(maxProfit, 0.01)) * 100));
+            const isProfit = result.profit > 0;
+            const isBest = marketplace.id === best.marketplace.id;
+            const tone = marketplace.color === "shopee"
+              ? "from-shopee via-accent to-sun"
+              : "from-ml-text via-ink to-accent";
+            const mark = marketplace.id.startsWith("shopee") ? "SP" : "ML";
+
+            return (
+              <div
+                key={marketplace.id}
+                className="rounded-[1.6rem] border border-ink/10 bg-white/80 p-4 shadow-[0_14px_34px_rgba(16,35,61,0.05)]"
+              >
+                <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+                  <div className="flex items-center gap-4">
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-2xl ${marketplace.color === "shopee" ? "bg-shopee/12 text-shopee" : "bg-ml/55 text-ml-text"} font-display text-sm font-bold`}>
+                      {mark}
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-display text-xl font-bold text-ink">
+                          {marketplace.name}
+                        </span>
+                        <span className="rounded-full bg-bg-input px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-ink-soft">
+                          {marketplace.badge}
+                        </span>
+                        {isBest && (
+                          <span className="rounded-full bg-green/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-green">
+                            Melhor encaixe
+                          </span>
+                        )}
+                      </div>
+                      <p className="mt-1 text-sm text-ink-soft">
+                        Preco ideal {formatBRL(result.salePrice)} com margem real de {result.actualMargin.toFixed(1)}%
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="text-left md:text-right">
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-ink-soft">
+                      Lucro por unidade
+                    </p>
+                    <p className={`mt-1 font-display text-2xl font-bold ${isProfit ? "text-green" : "text-danger"}`}>
+                      {formatBRL(result.profit)}
+                    </p>
+                  </div>
+                </div>
+
+                <div className="mt-4 h-3 overflow-hidden rounded-full bg-ink/8">
+                  <div
+                    className={`h-full rounded-full bg-gradient-to-r ${tone} transition-all duration-700`}
+                    style={{ width: `${barWidth}%` }}
+                  />
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                  <Metric label="Taxas" value={formatBRL(result.fees.totalFees)} />
+                  <Metric label="Liquido" value={formatBRL(result.netRevenue)} />
+                  <Metric label="Comissao" value={`${(result.fees.commissionPct * 100).toFixed(0)}%`} />
+                </div>
+              </div>
+            );
+          })}
+        </div>
       </div>
+    </section>
+  );
+}
+
+function MiniStat({ label, value }) {
+  return (
+    <div className="rounded-[1.15rem] border border-white/10 bg-white/7 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-white/50">{label}</p>
+      <p className="mt-2 font-display text-xl font-bold">{value}</p>
+    </div>
+  );
+}
+
+function Metric({ label, value }) {
+  return (
+    <div className="rounded-[1.15rem] border border-ink/10 bg-bg-input/70 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{label}</p>
+      <p className="mt-2 text-lg font-semibold text-ink">{value}</p>
     </div>
   );
 }

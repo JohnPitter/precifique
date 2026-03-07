@@ -1,114 +1,89 @@
-# Precifique
+# Margem
 
 <div align="center">
 
 ![React](https://img.shields.io/badge/React-19-blue?style=for-the-badge&logo=react)
-![Vite](https://img.shields.io/badge/Vite-7-purple?style=for-the-badge&logo=vite)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-cyan?style=for-the-badge&logo=tailwindcss)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
+![Vite](https://img.shields.io/badge/Vite-7-1f2937?style=for-the-badge&logo=vite)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind-4-0f766e?style=for-the-badge&logo=tailwindcss)
+![License](https://img.shields.io/badge/License-MIT-0f172a?style=for-the-badge)
 
-**Calculadora de Precificação para Marketplaces**
+**Cockpit de precificacao para marketplaces**
 
-*Descubra o preço ideal para vender na Shopee e Mercado Livre*
+*Projeto originalmente lancado como Precifique. O rebranding mantem o repo e a URL atuais por enquanto.*
 
 [Demo](https://johnpitter.github.io/precifique/) •
+[Visao Geral](#visao-geral) •
 [Features](#features) •
-[Screenshots](#screenshots) •
-[Comissões](#comissões) •
+[Como-Funciona](#como-funciona) •
 [Desenvolvimento](#desenvolvimento)
 
 </div>
 
 ---
 
-## Overview
+## Visao Geral
 
-Precifique calcula o preço ideal de venda para os maiores marketplaces do Brasil, considerando custos do produto, margem de lucro desejada, impostos e comissões atualizadas.
+Margem ajuda vendedores brasileiros a decidir preco com menos chute e mais contexto operacional. A aplicacao cruza custo unitario, imposto, comissoes e taxa fixa para responder tres perguntas centrais:
 
-**O que você pode fazer:**
-- **Preço Ideal** — Calcular o preço de venda com base nos custos e margem desejada
-- **Cálculo Reverso** — Já sabe o preço? Veja quanto sobra de lucro em cada marketplace
-- **Comparativo** — Visualizar lado a lado qual marketplace dá mais lucro
-- **Subsídio Pix** — Ver economia com pagamento via Pix (Shopee)
+- Qual preco protege a margem minima desejada?
+- Qual marketplace deixa mais lucro por unidade?
+- Se eu vender pelo preco que ja pratico, quanto realmente sobra?
+
+O app compara Shopee CNPJ, Shopee CPF, Mercado Livre Classico e Mercado Livre Premium com leitura de preco ideal e simulacao reversa.
 
 ---
 
 ## Features
 
-| Feature | Descrição |
+| Feature | Descricao |
 |---------|-----------|
-| **Preço Ideal** | Calcula o preço de venda ideal por marketplace |
-| **Cálculo Reverso** | Dado um preço, mostra lucro real e margem |
-| **Comparativo Rápido** | Ranking visual de lucratividade entre marketplaces |
-| **Subsídio Pix** | Economia com Pix na Shopee (5-8% de desconto) |
-| **Impostos** | Simples Nacional integrado ao cálculo (0-30%) |
-| **4 Marketplaces** | Shopee CNPJ, Shopee CPF, ML Clássico, ML Premium |
-| **Responsivo** | Mobile-first, funciona em qualquer dispositivo |
+| **Rebranding completo** | Nova identidade visual, narrativa mais analitica e interface em formato de cockpit |
+| **Preco ideal** | Calcula o preco necessario para sustentar a margem-alvo por marketplace |
+| **Simulador reverso** | Informa taxas, repasse liquido, lucro e margem real a partir de um preco ja definido |
+| **Ranking de canais** | Ordena os marketplaces pelo lucro por unidade e destaca o melhor encaixe |
+| **Leitura de Pix** | Mostra o impacto do subsidio Pix na Shopee |
+| **Custos detalhados** | Produto, embalagem, mao de obra, frete, outros custos e imposto |
+| **Responsivo** | Experiencia revisada para desktop e mobile |
 
 ---
 
-## Screenshots
+## Screenshot
 
-![Precifique](assets/screenshot.png)
-
----
-
-## Comissões
-
-Dados atualizados em **Março/2026**. Consulte os sites oficiais para verificar valores vigentes.
-
-### Shopee (CNPJ e CPF)
-
-| Faixa de Preço | Comissão | Taxa Fixa | Subsídio Pix |
-|----------------|----------|-----------|--------------|
-| ≤ R$79,99 | 20% | R$4 | — |
-| ≤ R$99,99 | 14% | R$16 | 5% |
-| ≤ R$199,99 | 14% | R$20 | 5% |
-| ≤ R$499,99 | 14% | R$26 | 5% |
-| > R$499,99 | 14% | R$28 | 8% |
-
-### Mercado Livre — Clássico
-
-| Faixa de Preço | Comissão | Taxa Fixa |
-|----------------|----------|-----------|
-| ≤ R$79 | 14% | R$6,50 |
-| ≤ R$199 | 13% | — |
-| > R$199 | 10% | — |
-
-### Mercado Livre — Premium
-
-| Faixa de Preço | Comissão | Taxa Fixa |
-|----------------|----------|-----------|
-| ≤ R$79 | 19% | — |
-| ≤ R$199 | 18% | — |
-| > R$199 | 15% | — |
-
-> **Fontes oficiais:**
-> [Shopee](https://seller.shopee.com.br/edu/article/26839) •
-> [Mercado Livre](https://www.mercadolivre.com.br/ajuda/quanto-custa-vender-um-produto_1338)
+![Margem](assets/screenshot.png)
 
 ---
 
 ## Como Funciona
 
-### Cálculo do Preço Ideal
+### 1. Calculo do preco ideal
 
-```
-custo_total = custo_produto + embalagem + mão_de_obra + frete + outros
+```text
+custo_total = custo_produto + embalagem + mao_de_obra + frete + outros
 imposto = custo_total × taxa_imposto
-preço_venda = (custo_total + imposto + taxa_fixa) / (1 - margem - comissão%)
+preco_venda = (custo_total + imposto + taxa_fixa) / (1 - margem - comissao)
 ```
 
-O algoritmo itera até convergir no preço ideal, já que a faixa de comissão depende do preço final.
+Como comissao e taxa fixa dependem da faixa de preco, o motor itera ate convergir no valor final.
 
-### Cálculo Reverso
+### 2. Calculo reverso
 
+```text
+taxas = preco_venda × comissao + taxa_fixa
+receita_liquida = preco_venda - taxas
+lucro = receita_liquida - custo_total
+margem_real = lucro / preco_venda × 100
 ```
-taxas = preço_venda × comissão% + taxa_fixa
-receita_líquida = preço_venda - taxas
-lucro = receita_líquida - custo_total
-margem_real = lucro / preço_venda × 100
-```
+
+### 3. Marketplaces cobertos
+
+| Canal | Regra principal |
+|------|------------------|
+| **Shopee CNPJ** | Faixas com comissao de 14% a 20% + taxa fixa + subsidio Pix |
+| **Shopee CPF** | Mesmo modelo da Shopee com acrescimo operacional de R$3 na taxa fixa |
+| **ML Classico** | Comissao de 10% a 14% com taxa fixa apenas nas faixas mais baixas |
+| **ML Premium** | Comissao de 15% a 19% sem taxa fixa |
+
+> Referencia interna de dados: Marco/2026. Sempre confirme mudancas nos portais oficiais.
 
 ---
 
@@ -116,7 +91,7 @@ margem_real = lucro / preço_venda × 100
 
 ### Requisitos
 
-| Requisito | Versão |
+| Requisito | Versao |
 |-----------|--------|
 | Node.js | 20+ |
 | npm | 10+ |
@@ -134,60 +109,60 @@ Acesse `http://localhost:5173`
 
 ### Scripts
 
-| Comando | Descrição |
+| Comando | Descricao |
 |---------|-----------|
 | `npm run dev` | Servidor de desenvolvimento |
-| `npm run build` | Build para produção |
+| `npm run build` | Build para producao |
 | `npm run preview` | Preview do build |
-| `npm run test` | Rodar testes |
+| `npm run test` | Testes com Vitest |
 | `npm run lint` | Linting com ESLint |
 
 ### Stack
 
-| Tecnologia | Versão | Uso |
-|------------|--------|-----|
-| React | 19.2 | UI framework |
-| Vite | 7.3 | Build tool |
-| Tailwind CSS | 4.2 | Estilização |
-| Vitest | 4.0 | Testes |
+| Tecnologia | Uso |
+|------------|-----|
+| React 19 | Interface e estado |
+| Vite 7 | Build e dev server |
+| Tailwind CSS 4 | Tema e composicao visual |
+| Vitest 4 | Validacao do motor de precificacao |
 
 ### Estrutura
 
-```
+```text
 src/
-├── lib/
-│   ├── pricing.js          # Motor de cálculo (preço ideal + reverso)
-│   ├── pricing.test.js     # Testes do motor de cálculo
-│   ├── marketplaces.js     # Tabelas de comissão por marketplace
-│   └── marketplaces.test.js
+├── App.jsx
+├── index.css
 ├── components/
-│   ├── App.jsx             # Container principal + state
-│   ├── CostForm.jsx        # Formulário de custos
-│   ├── MarketplaceCard.jsx # Card de resultado por marketplace
-│   ├── ComparisonBar.jsx   # Gráfico comparativo
-│   ├── ReverseCalc.jsx     # Cálculo reverso
+│   ├── ComparisonBar.jsx
+│   ├── CostForm.jsx
+│   ├── Footer.jsx
 │   ├── Header.jsx
-│   └── Footer.jsx
-├── index.css               # Tema Tailwind
-└── main.jsx
+│   ├── MarketplaceCard.jsx
+│   └── ReverseCalc.jsx
+└── lib/
+    ├── marketplaces.js
+    ├── marketplaces.test.js
+    ├── pricing.js
+    └── pricing.test.js
 ```
 
 ---
 
 ## Deploy
 
-Deploy automático via GitHub Pages em cada push para `main`.
+Deploy automatico via GitHub Pages a cada push em `main`.
 
-**URL:** [johnpitter.github.io/precifique](https://johnpitter.github.io/precifique/)
+**URL atual:** [johnpitter.github.io/precifique](https://johnpitter.github.io/precifique/)
+
+---
+
+## Fontes oficiais
+
+- Shopee: https://seller.shopee.com.br/edu/article/26839
+- Mercado Livre: https://www.mercadolivre.com.br/ajuda/quanto-custa-vender-um-produto_1338
 
 ---
 
 ## License
 
 MIT
-
----
-
-## Suporte
-
-- **Issues:** [GitHub Issues](https://github.com/JohnPitter/precifique/issues)

@@ -11,91 +11,149 @@ export default function ReverseCalc({ costs }) {
     .some(([, v]) => v > 0);
 
   return (
-    <div className="bg-bg-card border border-border rounded-2xl p-5 sm:p-6">
-      <h2 className="text-lg font-bold mb-1 flex items-center gap-2">
-        <span className="text-2xl">🔄</span>
-        Cálculo Reverso
-      </h2>
-      <p className="text-sm text-text-dim mb-4">Já sabe o preço? Veja quanto sobra de lucro</p>
+    <section className="animate-rise rounded-[2rem] border border-white/70 bg-surface/85 p-5 shadow-panel backdrop-blur-xl sm:p-6">
+      <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+        <div className="max-w-2xl">
+          <p className="text-[0.72rem] font-bold uppercase tracking-[0.24em] text-accent">
+            Simulador reverso
+          </p>
+          <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink">
+            Ja tem o preco? Confira quanto realmente sobra.
+          </h2>
+          <p className="mt-3 text-sm leading-6 text-ink-soft">
+            Digite um preco de vitrine para medir taxas, repasse liquido e lucro final por canal.
+          </p>
+        </div>
 
-      <div className="relative mb-4">
-        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-text-dim text-sm font-medium">R$</span>
+        <div className="rounded-[1.4rem] border border-ink/10 bg-white/75 px-4 py-3 text-sm text-ink-soft">
+          {hasCosts
+            ? "Com custos informados, o simulador mostra lucro e margem real."
+            : "Sem custos, o simulador mostra taxas e repasse liquido."}
+        </div>
+      </div>
+
+      <div className="relative mt-6">
+        <span className="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-semibold text-ink-soft">R$</span>
         <input
           type="number"
           step="0.01"
           min="0"
-          placeholder="Digite o preço de venda"
+          placeholder="Digite um preco de venda"
           value={salePrice}
           onChange={(e) => setSalePrice(e.target.value)}
-          className="w-full bg-bg-input border border-border rounded-xl pl-10 pr-4 py-3 text-lg font-bold
-                     focus:outline-none focus:border-border-focus focus:ring-2 focus:ring-primary/20 transition-all"
+          className="w-full rounded-[1.5rem] border border-ink/10 bg-white/80 py-4 pl-14 pr-5 text-xl font-semibold text-ink transition-all focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10"
         />
       </div>
 
-      {price > 0 && (
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-          {MARKETPLACES.map((mp) => {
+      {price > 0 ? (
+        <div className="mt-6 grid grid-cols-1 gap-4 xl:grid-cols-2">
+          {MARKETPLACES.map((mp, index) => {
             const r = calcFromPrice(price, costs, mp);
             const isProfit = r.profit > 0;
             const netWithPix = mp.hasPix && r.fees.pixDiscount > 0
               ? price - r.fees.totalFeesWithPix
               : null;
             const profitWithPix = netWithPix !== null ? netWithPix - r.totalCost : null;
+            const tone = mp.color === "shopee"
+              ? "border-shopee/20 bg-[linear-gradient(135deg,rgba(238,77,45,0.12),rgba(255,255,255,0.82))]"
+              : "border-ml-text/15 bg-[linear-gradient(135deg,rgba(255,230,0,0.28),rgba(255,255,255,0.82))]";
+            const mark = mp.id.startsWith("shopee") ? "SP" : "ML";
 
             return (
-              <div key={mp.id} className={`border rounded-xl p-3 ${hasCosts ? (isProfit ? "border-green/30 bg-green-bg/50" : "border-red/30 bg-red-bg/50") : "border-border bg-bg-highlight/50"}`}>
-                <div className="flex items-center gap-1.5 mb-2">
-                  <span>{mp.icon}</span>
-                  <span className="text-sm font-bold">{mp.name}</span>
-                  <span className="text-xs text-text-dim">{mp.badge}</span>
-                </div>
-
-                <div className="space-y-1.5">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-text-dim">Taxas</span>
-                    <span className="font-semibold text-text-dim">{formatBRL(r.fees.totalFees)}</span>
-                  </div>
-
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-text-dim">Você recebe</span>
-                    <span className="font-semibold">{formatBRL(r.netRevenue)}</span>
+              <div
+                key={mp.id}
+                className={`rounded-[1.6rem] border p-4 shadow-[0_14px_34px_rgba(16,35,61,0.05)] ${tone}`}
+                style={{ animationDelay: `${index * 90}ms` }}
+              >
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-2xl font-display text-sm font-bold ${mp.color === "shopee" ? "bg-shopee/12 text-shopee" : "bg-ml/55 text-ml-text"}`}>
+                      {mark}
+                    </div>
+                    <div>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <span className="font-display text-xl font-bold text-ink">{mp.name}</span>
+                        <span className="rounded-full bg-white/70 px-3 py-1 text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-ink-soft">
+                          {mp.badge}
+                        </span>
+                      </div>
+                      <p className="mt-1 text-sm text-ink-soft">
+                        Taxas totais de {formatBRL(r.fees.totalFees)}
+                      </p>
+                    </div>
                   </div>
 
                   {hasCosts && (
+                    <div className={`rounded-full px-3 py-1 text-[0.7rem] font-bold uppercase tracking-[0.16em] ${isProfit ? "bg-green/12 text-green" : "bg-danger/12 text-danger"}`}>
+                      {isProfit ? "Lucro positivo" : "Lucro negativo"}
+                    </div>
+                  )}
+                </div>
+
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <Stat label="Voce recebe" value={formatBRL(r.netRevenue)} />
+                  <Stat label="Comissao" value={`${(r.fees.commissionPct * 100).toFixed(0)}%`} />
+                  {hasCosts ? (
                     <>
-                      <div className="flex items-center justify-between text-sm">
-                        <span className="text-text-dim">Custo total</span>
-                        <span className="font-semibold text-text-dim">{formatBRL(r.totalCost)}</span>
-                      </div>
-                      <div className="border-t border-border/50 pt-1.5 flex items-center justify-between">
-                        <span className="text-sm font-medium">Lucro</span>
-                        <span className={`text-lg font-bold ${isProfit ? "text-green" : "text-red"}`}>{formatBRL(r.profit)}</span>
-                      </div>
-                      <p className="text-xs text-text-dim text-right">Margem: {r.actualMargin.toFixed(1)}%</p>
+                      <Stat label="Custo total" value={formatBRL(r.totalCost)} />
+                      <Stat
+                        label="Lucro projetado"
+                        value={formatBRL(r.profit)}
+                        highlight={isProfit ? "text-green" : "text-danger"}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Stat label="Taxa fixa" value={r.fees.fixedFee > 0 ? formatBRL(r.fees.fixedFee) : "Sem taxa"} />
+                      <Stat label="Leitura" value="Informe custos para ver lucro" />
                     </>
                   )}
                 </div>
 
+                {hasCosts && (
+                  <p className="mt-4 text-right text-xs uppercase tracking-[0.18em] text-ink-soft">
+                    Margem real {r.actualMargin.toFixed(1)}%
+                  </p>
+                )}
+
                 {netWithPix !== null && (
-                  <div className="mt-2 pt-2 border-t border-border/30 space-y-1">
-                    <p className="text-[11px] text-text-dim font-medium">Com subsídio PIX:</p>
-                    <div className="flex items-center justify-between text-xs">
-                      <span className="text-text-dim">Taxas {formatBRL(r.fees.totalFeesWithPix)}</span>
-                      <span className="text-text-secondary font-semibold">Recebe {formatBRL(netWithPix)}</span>
+                  <div className="mt-4 rounded-[1.3rem] border border-sky/20 bg-sky/10 p-4">
+                    <p className="text-xs font-bold uppercase tracking-[0.18em] text-sky-700">
+                      Leitura com Pix
+                    </p>
+                    <div className="mt-3 grid gap-2 sm:grid-cols-2">
+                      <Stat label="Taxas" value={formatBRL(r.fees.totalFeesWithPix)} />
+                      <Stat label="Repasse" value={formatBRL(netWithPix)} />
+                      {hasCosts && profitWithPix !== null && (
+                        <Stat
+                          label="Lucro"
+                          value={formatBRL(profitWithPix)}
+                          highlight={profitWithPix > 0 ? "text-green" : "text-danger"}
+                        />
+                      )}
+                      <Stat label="Economia" value={formatBRL(r.fees.pixDiscount)} />
                     </div>
-                    {hasCosts && profitWithPix !== null && (
-                      <div className="flex items-center justify-between text-xs">
-                        <span className="text-text-dim">Lucro</span>
-                        <span className={`font-bold ${profitWithPix > 0 ? "text-green" : "text-red"}`}>{formatBRL(profitWithPix)}</span>
-                      </div>
-                    )}
                   </div>
                 )}
               </div>
             );
           })}
         </div>
+      ) : (
+        <div className="mt-6 rounded-[1.6rem] border border-dashed border-ink/15 bg-white/72 p-6 text-sm leading-7 text-ink-soft">
+          Digite um preco para comparar o repasse liquido de cada marketplace e validar se a tabela atual
+          ainda protege sua margem.
+        </div>
       )}
+    </section>
+  );
+}
+
+function Stat({ label, value, highlight }) {
+  return (
+    <div className="rounded-[1.15rem] border border-ink/10 bg-white/70 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.18em] text-ink-soft">{label}</p>
+      <p className={`mt-2 text-lg font-semibold text-ink ${highlight ?? ""}`}>{value}</p>
     </div>
   );
 }

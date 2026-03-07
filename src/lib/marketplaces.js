@@ -45,9 +45,21 @@ function calcShopeeCNPJ(salePrice) {
 }
 
 // ── Shopee CPF ──────────────────────────────────────────────
-// Taxas idênticas ao CNPJ (confirmado com dados reais Mar/2026)
+// Mantem a estrutura da Shopee CNPJ com acrescimo operacional para CPF.
 function calcShopeeCPF(salePrice) {
-  return calcShopeeCNPJ(salePrice);
+  const base = calcShopeeCNPJ(salePrice);
+  const cpfExtra = 3;
+  const fixedFee = base.fixedFee + cpfExtra;
+  const totalFees = base.commission + fixedFee;
+
+  return {
+    ...base,
+    fixedFee,
+    totalFees,
+    totalFeesWithPix: totalFees - base.pixDiscount,
+    cpfExtra,
+    fixedFeeLabel: `${base.fixedFeeLabel} + CPF`,
+  };
 }
 
 // ── Mercado Livre Clássico ──────────────────────────────────
