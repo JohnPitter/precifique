@@ -45,8 +45,8 @@ export default function App() {
         <Header />
 
         <main className="flex-1 px-4 pb-12 sm:px-6">
-          <div className="mx-auto flex w-full max-w-6xl flex-col gap-6">
-            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[400px_minmax(0,1fr)]">
+          <div className="mx-auto flex w-full max-w-[1380px] flex-col gap-6">
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-[360px_minmax(0,1fr)] xl:grid-cols-[380px_minmax(0,1fr)]">
               <aside className="lg:sticky lg:top-6 lg:self-start">
                 <CostForm
                   costs={costs}
