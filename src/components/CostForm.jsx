@@ -139,7 +139,7 @@ function InputField({ field, value, onValueChange }) {
           placeholder={field.placeholder}
           value={value || ""}
           onChange={(e) => onValueChange(e.target.value)}
-          className="w-full rounded-[1.1rem] border border-ink/10 bg-bg-input pl-12 pr-4 py-3 text-lg font-semibold text-ink transition-all focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10"
+          className="w-full rounded-[1.1rem] border border-ink/10 bg-bg-input pl-12 pr-4 py-3 text-[clamp(0.95rem,1.3vw,1.05rem)] font-semibold text-ink transition-all focus:border-accent focus:outline-none focus:ring-4 focus:ring-accent/10"
         />
       </div>
     </div>

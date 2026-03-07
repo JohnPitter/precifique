@@ -105,10 +105,10 @@ export function getValueTextClass(value, variant = "stat") {
   }
 
   if (variant === "summary") {
-    if (length >= 13) return "text-[clamp(0.72rem,1vw,0.84rem)]";
-    if (length >= 11) return "text-[clamp(0.82rem,1.2vw,0.96rem)]";
-    if (length >= 10) return "text-[clamp(0.92rem,1.4vw,1.08rem)]";
-    return "text-[clamp(1.25rem,3vw,2rem)]";
+    if (length >= 13) return "text-[clamp(0.64rem,0.85vw,0.78rem)]";
+    if (length >= 11) return "text-[clamp(0.74rem,1vw,0.88rem)]";
+    if (length >= 10) return "text-[clamp(0.82rem,1.15vw,0.96rem)]";
+    return "text-[clamp(1.05rem,2vw,1.45rem)]";
   }
 
   if (length >= 13) return "text-[clamp(0.68rem,0.95vw,0.8rem)]";
