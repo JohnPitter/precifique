@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="px-4 pb-10 pt-6 sm:px-6">
-      <div className="mx-auto flex max-w-[1380px] flex-col gap-4 rounded-[2rem] border border-white/70 bg-surface/80 p-5 shadow-panel backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-6">
+      <div className="animate-rise mx-auto flex max-w-[1380px] flex-col gap-4 rounded-[2rem] border border-white/70 bg-surface/80 p-5 shadow-panel backdrop-blur-xl sm:flex-row sm:items-center sm:justify-between sm:p-6">
         <div className="flex min-w-0 flex-col gap-3 sm:max-w-md">
           <div className="flex min-w-0 items-center gap-4">
             <div className="relative flex h-12 w-12 shrink-0 items-center justify-center rounded-[1.2rem] bg-ink text-white">

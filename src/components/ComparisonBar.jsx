@@ -25,7 +25,7 @@ export default function ComparisonBar({ results }) {
             trocar canal ou rever custo.
           </p>
 
-          <div className="mt-6 rounded-[1.6rem] bg-ink p-5 text-white shadow-[0_20px_50px_rgba(16,35,61,0.24)]">
+          <div className="animate-pulse-soft animate-sheen mt-6 rounded-[1.6rem] bg-ink p-5 text-white shadow-[0_20px_50px_rgba(16,35,61,0.24)]">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/55">
               Veredito do cenario
             </p>
@@ -79,7 +79,7 @@ export default function ComparisonBar({ results }) {
                           {marketplace.badge}
                         </span>
                         {isBest && (
-                          <span className="rounded-full bg-green/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-green">
+                          <span className="animate-pulse-soft rounded-full bg-green/12 px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] text-green">
                             Melhor encaixe
                           </span>
                         )}
@@ -102,7 +102,7 @@ export default function ComparisonBar({ results }) {
 
                 <div className="mt-4 h-3 overflow-hidden rounded-full bg-ink/8">
                   <div
-                    className={`h-full rounded-full bg-gradient-to-r ${tone} transition-all duration-700`}
+                    className={`animate-bar-glow h-full rounded-full bg-gradient-to-r ${tone} transition-all duration-700`}
                     style={{ width: `${barWidth}%` }}
                   />
                 </div>

@@ -66,7 +66,7 @@ export default function MarketplaceCard({ marketplace, result, index = 0 }) {
         </span>
       </div>
 
-      <div className={`mt-5 rounded-[1.6rem] ${tone.surface} p-5`}>
+      <div className={`animate-sheen mt-5 rounded-[1.6rem] ${tone.surface} p-5`}>
         <p className="text-xs font-bold uppercase tracking-[0.2em] text-ink-soft">
           Preco recomendado
         </p>
