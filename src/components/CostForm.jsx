@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { getValueTextClass } from "../lib/pricing";
 
 const FIELDS = [
@@ -34,6 +35,8 @@ const FIELDS = [
 ];
 
 export default function CostForm({ costs, onChange, marginPct, onMarginChange, taxRate, onTaxChange }) {
+  const [expanded, setExpanded] = useState(false);
+
   function handleChange(key, value) {
     const num = value === "" ? 0 : parseFloat(value);
     if (!isNaN(num)) onChange({ ...costs, [key]: num });
@@ -42,6 +45,7 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
   const totalCost = Object.values(costs).reduce((s, v) => s + v, 0);
   const taxValue = totalCost * taxRate / 100;
   const totalWithTax = totalCost + taxValue;
+  const activeFields = FIELDS.filter((field) => costs[field.key] > 0).length;
 
   return (
     <section className="animate-rise rounded-[2rem] border border-white/70 bg-surface/85 p-5 shadow-panel backdrop-blur-xl sm:p-6">
@@ -53,9 +57,11 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
           <h2 className="mt-3 font-display text-3xl font-bold tracking-tight text-ink">
             Monte o seu cenario
           </h2>
-          <p className="mt-2 max-w-md text-sm leading-6 text-ink-soft">
-            Lance o custo completo da unidade e diga qual margem minima precisa proteger.
-          </p>
+          {expanded && (
+            <p className="mt-2 max-w-md text-sm leading-6 text-ink-soft">
+              Lance o custo completo da unidade e diga qual margem minima precisa proteger.
+            </p>
+          )}
         </div>
 
         <div className="rounded-full border border-ink/10 bg-white/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-ink-soft">
@@ -63,55 +69,98 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
         </div>
       </div>
 
-      <div className="mt-8 space-y-4">
-        {FIELDS.map((field) => (
-          <InputField
-            key={field.key}
-            field={field}
-            value={costs[field.key]}
-            onValueChange={(value) => handleChange(field.key, value)}
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-[1.2rem] border border-ink/10 bg-white/75 px-4 py-3">
+        <div className="flex flex-wrap gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-ink-soft">
+          <CompactStat label="Margem" value={`${marginPct}%`} />
+          <CompactStat label="Imposto" value={`${taxRate.toFixed(1).replace(".", ",")}%`} />
+          <CompactStat
+            label="Custo atual"
+            value={totalWithTax.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
           />
-        ))}
+        </div>
+        <p className="text-sm leading-6 text-ink-soft">
+          {expanded
+            ? "Campos avancados abertos para ajuste fino do cenario."
+            : `${FIELDS.length} campos de custo e controles avancados estao recolhidos.`}
+          {!expanded && activeFields > 0 ? ` ${activeFields} deles ja tem valor preenchido.` : ""}
+        </p>
+
+        <button
+          type="button"
+          onClick={() => setExpanded((current) => !current)}
+          className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-transform duration-200 hover:-translate-y-0.5"
+        >
+          <span>{expanded ? "Recolher painel" : "Expandir painel"}</span>
+          <span aria-hidden="true">{expanded ? "−" : "+"}</span>
+        </button>
       </div>
 
-      <div className="mt-8 space-y-5 border-t border-ink/10 pt-6">
-        <RangeField
-          label="Margem de lucro desejada"
-          value={marginPct}
-          min={5}
-          max={100}
-          step={1}
-          onChange={onMarginChange}
-          presets={[20, 30, 40, 55]}
-        />
+      {expanded && (
+        <div className="animate-rise mt-6 space-y-6 border-t border-ink/10 pt-6">
+          <div className="space-y-4">
+            {FIELDS.map((field) => (
+              <InputField
+                key={field.key}
+                field={field}
+                value={costs[field.key]}
+                onValueChange={(value) => handleChange(field.key, value)}
+              />
+            ))}
+          </div>
 
-        <RangeField
-          label="Imposto sobre a operacao"
-          value={taxRate}
-          min={0}
-          max={30}
-          step={0.5}
-          onChange={onTaxChange}
-          presets={[0, 6, 12, 18]}
-        />
-      </div>
+          <div className="space-y-5">
+            <RangeField
+              label="Margem de lucro desejada"
+              value={marginPct}
+              min={5}
+              max={100}
+              step={1}
+              onChange={onMarginChange}
+              presets={[20, 30, 40, 55]}
+            />
 
-      <div className="mt-8 grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">
-        <SummaryBox
-          label="Base sem imposto"
-          value={totalCost.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-        />
-        <SummaryBox
-          label="Imposto estimado"
-          value={taxValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-        />
-        <SummaryBox
-          label="Custo final"
-          value={totalWithTax.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
-          highlight
-        />
-      </div>
+            <RangeField
+              label="Imposto sobre a operacao"
+              value={taxRate}
+              min={0}
+              max={30}
+              step={0.5}
+              onChange={onTaxChange}
+              presets={[0, 6, 12, 18]}
+            />
+          </div>
+
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(140px,1fr))] gap-3">
+            <SummaryBox
+              label="Base sem imposto"
+              value={totalCost.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+            />
+            <SummaryBox
+              label="Imposto estimado"
+              value={taxValue.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+            />
+            <SummaryBox
+              label="Custo final"
+              value={totalWithTax.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })}
+              highlight
+            />
+          </div>
+        </div>
+      )}
     </section>
+  );
+}
+
+function CompactStat({ label, value }) {
+  const valueClass = getValueTextClass(value);
+
+  return (
+    <div className="inline-flex min-w-0 items-center gap-2 rounded-full border border-ink/10 bg-white px-3 py-1.5">
+      <span className="text-[0.62rem] font-semibold uppercase tracking-[0.12em] text-ink-soft">{label}</span>
+      <span className={`whitespace-nowrap font-display font-bold leading-tight tabular-nums text-ink ${valueClass}`}>
+        {value}
+      </span>
+    </div>
   );
 }
 
