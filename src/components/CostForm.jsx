@@ -85,20 +85,39 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
           {!expanded && activeFields > 0 ? ` ${activeFields} deles ja tem valor preenchido.` : ""}
         </p>
 
-        <button
-          type="button"
-          onClick={() => setExpanded((current) => !current)}
-          className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-transform duration-200 hover:-translate-y-0.5"
-        >
-          <span>{expanded ? "Recolher painel" : "Expandir painel"}</span>
-          <span aria-hidden="true">{expanded ? "−" : "+"}</span>
-        </button>
+        {!expanded && (
+          <button
+            type="button"
+            onClick={() => setExpanded(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-transform duration-200 hover:-translate-y-0.5"
+          >
+            <span>Expandir painel</span>
+            <span aria-hidden="true">+</span>
+          </button>
+        )}
       </div>
 
       {expanded && (
         <div className="animate-rise mt-6 space-y-6 border-t border-ink/10 pt-6">
           <div className="space-y-4">
-            {FIELDS.map((field) => (
+            <InputField
+              field={FIELDS[0]}
+              value={costs[FIELDS[0].key]}
+              onValueChange={(value) => handleChange(FIELDS[0].key, value)}
+            />
+
+            <div className="flex justify-end">
+              <button
+                type="button"
+                onClick={() => setExpanded(false)}
+                className="inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-ink transition-transform duration-200 hover:-translate-y-0.5"
+              >
+                <span>Recolher painel</span>
+                <span aria-hidden="true">−</span>
+              </button>
+            </div>
+
+            {FIELDS.slice(1).map((field) => (
               <InputField
                 key={field.key}
                 field={field}

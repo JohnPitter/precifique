@@ -25,8 +25,8 @@ export default function ComparisonBar({ results }) {
             trocar canal ou rever custo.
           </p>
 
-          <div className="animate-pulse-soft animate-sheen mt-6 rounded-[1.6rem] bg-ink p-5 text-white shadow-[0_20px_50px_rgba(16,35,61,0.24)]">
-            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/55">
+          <div className="animate-pulse-soft animate-sheen mt-6 rounded-[1.6rem] bg-[linear-gradient(135deg,#f7a35c,#ea6a47)] p-5 text-white shadow-[0_20px_50px_rgba(234,106,71,0.28)]">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-white/80">
               Veredito do cenario
             </p>
             <h3 className="mt-3 break-words font-display text-2xl font-bold leading-tight">
@@ -34,7 +34,7 @@ export default function ComparisonBar({ results }) {
                 ? "Nenhum canal sustenta a operacao"
                 : `${best.marketplace.name} ${best.marketplace.badge}`}
             </h3>
-            <p className="mt-2 text-sm leading-6 text-white/72">
+            <p className="mt-2 text-sm leading-6 text-white/88">
               {allNegative
                 ? "Todos os canais estao negativos. Voce precisa subir preco ou reduzir a estrutura de custo."
                 : `Hoje ele entrega ${formatBRL(gap)} a mais por unidade em relacao ao segundo colocado.`}
@@ -125,8 +125,8 @@ function MiniStat({ label, value }) {
   const valueClass = getValueTextClass(value, "hero");
 
   return (
-    <div className="min-w-0 rounded-[1.15rem] border border-white/10 bg-white/7 p-3">
-      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/50">{label}</p>
+    <div className="min-w-0 rounded-[1.15rem] border border-white/18 bg-white/14 p-3">
+      <p className="text-[0.7rem] font-semibold uppercase tracking-[0.16em] text-white/75">{label}</p>
       <p className={`mt-2 whitespace-nowrap font-display font-bold leading-tight tabular-nums ${valueClass}`}>{value}</p>
     </div>
   );
