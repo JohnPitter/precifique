@@ -85,16 +85,6 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
           {!expanded && activeFields > 0 ? ` ${activeFields} deles ja tem valor preenchido.` : ""}
         </p>
 
-        {!expanded && (
-          <button
-            type="button"
-            onClick={() => setExpanded(true)}
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-transform duration-200 hover:-translate-y-0.5"
-          >
-            <span>Expandir painel</span>
-            <span aria-hidden="true">+</span>
-          </button>
-        )}
       </div>
 
       <div className="mt-6 space-y-4">
@@ -103,6 +93,19 @@ export default function CostForm({ costs, onChange, marginPct, onMarginChange, t
           value={costs[FIELDS[0].key]}
           onValueChange={(value) => handleChange(FIELDS[0].key, value)}
         />
+
+        {!expanded && (
+          <div className="flex justify-end">
+            <button
+              type="button"
+              onClick={() => setExpanded(true)}
+              className="inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-xs font-semibold uppercase tracking-[0.16em] text-white transition-transform duration-200 hover:-translate-y-0.5"
+            >
+              <span>Expandir painel</span>
+              <span aria-hidden="true">+</span>
+            </button>
+          </div>
+        )}
 
         {expanded && (
           <div className="flex justify-end">
